@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang ="pt-br">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="styles.css"/>
+        <title>
+            FCC Project - Survey Form
+        </title>
+    </head>
+    <body>
+      <header class="header">
+        <h1 id="title">Pesquisa de satisfação</h1>
+        <p id="description"><i>Obrigado por nos ajudar a melhorar nossa plataforma</i></p>
+      </header>
+        <div class="container">
+                <form id="survey-form">
+                  <div class="formulario">
+                    
+                  <label id= "name-label" for="name">Nome</label>
+                  <input id = "name" type="text" placeholder="Digite seu nome" required>
+              </div>
+                <div class="formulario">
+                  <label id="email-label" for="email">Email</label>
+                    <input id = "email" type="email" placeholder="Digite seu email" required>
+                </div>
+                <div class="formulario">
+                  <label id="number-label" for="number">Idade</label>
+                    <input id = "number" type="number" min="18" max="120" placeholder="Idade" required>
+                </div>
+              <div class="formulario">
+                <p>Qual seu status atual?</p>
+                  <select id="dropdown">
+                    <option value="">Selecione uma opção</option>
+                    <option value="1">Estudante</option>
+                    <option value="2">Estagiário</option>
+                    <option value="3">Empregado</option>
+                  </select>
+              </div>
+              <div class="formulario">
+                <p id="recommend">Você recomendaria freeCodeCamp para um amigo?</p>
+                <label for="claro">
+                    <input id="claro" name="recomendacao" type="radio" value="10">Claro!
+                </label>
+                <label for="talvez">
+                    <input id="talvez" name="recomendacao" type="radio" value="5">Talvez
+                </label>
+                <label for="nao">
+                    <input id="nao" name="recomendacao" type="radio" value="0">Não
+                </label>
+              </div>
+          
+              <div class="formulario">
+                <p>O que você gostaria de melhorar?</p>
+                <label for="sugestao">
+                    <input id="frontend" name="sugestao" type="checkbox" value="frontend">Front-End
+                </label>
+                <label>
+                    <input id="backend" name="sugestao" type="checkbox" value="backend">Back-End
+                </label>
+              </div>
+
+              <div class="formulario">
+                <p>Algum comentário ou sugestão?</p>
+                <label for="comentarios">
+                    <textarea id="comentarios" placeholder="Insira seu comentário aqui..."></textarea>
+                </label>
+              </div>
+                <div class="formulario">
+                  <input id="submit" type="submit" value="Enviar">
+                </div>
+              </form>
+        </div>
+    </body>
+</html>
