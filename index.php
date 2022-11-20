@@ -2,12 +2,6 @@
 session_start();
 require 'config/connection.php';
 
-
-$listaCategorias = $db->query('SELECT id as IDCATEGORIA, categoria FROM categoria');
-$categoria = $listaCategorias->fetchAll(PDO::FETCH_ASSOC);
-
-$listaRespostas = $db->query('SELECT id as IDRESPOSTA, resposta, IdCategoria from respostas');
-$respostas = $listaRespostas->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -21,36 +15,33 @@ $respostas = $listaRespostas->fetchAll(PDO::FETCH_ASSOC);
     DEV
   </title>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-
-
-
 </head>
 
 
 
 <body>
   <header class="header">
-    <h1 id="title">Pesquisa de satisfação</h1>
-    <p id="description"><i>Obrigado por nos ajudar a melhorar nossa plataforma</i></p>
+    <h1 id="title">Pesquisa do consumidor</h1>
+    <p id="description"><i>Queremos te fornecer ofertas imbatíveis nesta Black Friday!</i></p>
   </header>
   <div class="container">
     <form id="survey-form" action="form_action.php" method="POST">
       <div class="formulario">
-        <?php if (!empty($_SESSION['erro'])):?>
-          <?php echo $_SESSION['erro'];?>
-          <?php $_SESSION['erro'] = '';?>
-       <?php endif; ?>
-       <?php if (!empty($_SESSION['sucesso'])):?>
-          <?php echo $_SESSION['sucesso'];?>
-          <?php $_SESSION['sucesso'] = '';?>
-       <?php endif; ?>
+        <?php if (!empty($_SESSION['erro'])) : ?>
+          <?php echo $_SESSION['erro']; ?>
+          <?php $_SESSION['erro'] = ''; ?>
+        <?php endif; ?>
+        <?php if (!empty($_SESSION['sucesso'])) : ?>
+          <?php echo $_SESSION['sucesso']; ?>
+          <?php $_SESSION['sucesso'] = ''; ?>
+        <?php endif; ?>
 
         <label id="name-label" for="name">Nome</label>
-        <input name="name" id="name" type="text" placeholder="Digite seu nome" required>
+        <input name="name" id="name" type="text" placeholder="Seu nome" required>
       </div>
       <div class="formulario">
         <label id="email-label" for="email">Email</label>
-        <input name="email" id="email" type="email" placeholder="Digite seu email" required>
+        <input name="email" id="email" type="email" placeholder="Seu melhor email" required>
       </div>
       <div class="formulario">
         <label id="number-label" for="cpf">CPF</label>
@@ -206,6 +197,7 @@ $respostas = $listaRespostas->fetchAll(PDO::FETCH_ASSOC);
   </div>
 
   <script>
+    //Exibe dinâmicamente containers de resposta de acordo com a categoria selecionada
     $(".formularioresposta").hide();
 
     function exibe(categoria, resposta) {
@@ -216,6 +208,7 @@ $respostas = $listaRespostas->fetchAll(PDO::FETCH_ASSOC);
       }
     }
 
+    //Limita a seleção de 3 opções para os inputs dentro da div de categoria
     $(".formulario input[type=checkbox]").on("click", function() {
       var count = $(".formulario input[type=checkbox]:checked").length;
       if (count < 3) {

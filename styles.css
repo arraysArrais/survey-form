@@ -48,6 +48,7 @@ margin-right:8px;
     height:3rem;
     font-size:1.1rem;
     background-color: white;
+    border-radius: 4px;
   }
 
   #submit:hover, #submit:active{
