@@ -5,7 +5,7 @@ A simple, customizable and responsive form solution using HTML, CSS, jQuery, PHP
 
 
 ## Requirements
-I recommend using XAMPP for the ease of use, buy you could also install needed components separately
+I recommend using XAMPP for the ease of use, but you could also install needed components separately
 - Apache 2.4.54+
 - MySQL/MariaDB 10.4.25+
 - PHP 8.1.10+
