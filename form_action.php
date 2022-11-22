@@ -1,12 +1,15 @@
 <?php
 session_start();
 require 'config/connection.php';
+require 'valida_cpf.php';
 
 $nome = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 $cpf = filter_input(INPUT_POST, 'cpf');
 
+//verificando se o cpf é válido
 
+if(validaCPF($cpf)==true){
 
 //recebo as respostas num array
 $arrayRespostas = filter_input(INPUT_POST, 'resposta', FILTER_SANITIZE_SPECIAL_CHARS, FILTER_REQUIRE_ARRAY);
@@ -48,3 +51,10 @@ if ($pdo->rowCount() > 0) {
 $_SESSION['sucesso'] = "<p class=" . "success" . ">Obrigado por nos emprestar um pouquinho do seu tempo :)<p>";
 header("Location: index.php");
 exit;
+}
+
+else{
+    $_SESSION['erro'] = "<p class=" . "error" . ">ERRO! CPF inválido!<p>";
+    header("Location: index.php");
+    exit;
+}
