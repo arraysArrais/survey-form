@@ -5,10 +5,17 @@ require 'valida_cpf.php';
 
 $nome = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
-$cpf = filter_input(INPUT_POST, 'cpf');
+$cpf = filter_input(INPUT_POST, 'cpf', FILTER_SANITIZE_SPECIAL_CHARS);
+
+
+//se não passar pelo filtro de e-mail
+if($email === false){
+    $_SESSION['erro'] = "<p class=" . "error" . ">ERRO! Email inválido!<p>";
+    header("Location: index.php");
+    exit;
+}
 
 //verificando se o cpf é válido
-
 if(validaCPF($cpf)==true){
 
 //recebo as respostas num array
@@ -18,11 +25,14 @@ $arrayRespostas = filter_input(INPUT_POST, 'resposta', FILTER_SANITIZE_SPECIAL_C
 $pdo = $db->query("select * from usuarios where email='$email'");
 $validaCpf = $db->query("select * from usuarios where cpf='$cpf'");
 
+//verificando se e-mail já existe
 if ($pdo->rowCount() > 0) {
     $_SESSION['erro'] = "<p class=" . "error" . ">ERRO! Email já existente!<p>";
     header("Location: index.php");
     exit;
-} else if ($validaCpf->rowCount() > 0) {
+} 
+//verificando se cpf já existe
+else if ($validaCpf->rowCount() > 0) {
     $_SESSION['erro'] = "<p class=" . "error" . ">ERRO! CPF já existente!<p>";
     header("Location: index.php");
     exit;
