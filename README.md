@@ -61,8 +61,9 @@ You can change the background image to one of the image assets included by chang
 ## Roadmap
 
 - [x]  Back-end platform integration -> DONE with **PHP + MySQL**
+- [x]  Strong client-side dynamic JS validation
+- [x]  Server-side validations
 - [ ]  CSV data export
-- [ ]  Strong client-side dynamic JS validation
 - [ ]  Analytics charts
 
 
