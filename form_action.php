@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'config/connection.php';
-require 'valida_cpf.php';
+require 'functions/valida_cpf.php';
 
 $nome = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS);
 $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);

@@ -1,6 +1,8 @@
 <?php
 session_start();
 require 'config/connection.php';
+require 'functions/checksessionerror.php';
+
 
 ?>
 
@@ -20,6 +22,7 @@ require 'config/connection.php';
 
 
 <body>
+  <a href="login.php">Login</a>
   <header class="header">
     <h1 id="title">Pesquisa do consumidor</h1>
     <p id="description"><i>Queremos te fornecer ofertas imbatíveis nesta Black Friday!</i></p>
@@ -27,32 +30,28 @@ require 'config/connection.php';
   <div class="container">
     <form id="survey-form" action="form_action.php" method="POST">
       <div class="formulario">
-        <?php if (!empty($_SESSION['erro'])) : ?>
-          <?php echo $_SESSION['erro']; ?>
-          <?php $_SESSION['erro'] = ''; ?>
-        <?php endif; ?>
-        <?php if (!empty($_SESSION['sucesso'])) : ?>
-          <?php echo $_SESSION['sucesso']; ?>
-          <?php $_SESSION['sucesso'] = ''; ?>
-        <?php endif; ?>
+
+        <?php
+        checkSessionError();
+        ?>
 
         <label id="name-label" for="name">Nome</label>
-        <input name="name" id="name" type="text" placeholder="Seu nome" required>
+        <input name="name" class="inputform" id="name" type="text" placeholder="Seu nome" required>
       </div>
       <div class="formulario">
         <label id="email-label" for="email">Email</label>
-        <input name="email" id="email" type="email" placeholder="Seu melhor email" required>
+        <input name="email" class="inputform" id="email" type="email" placeholder="Seu melhor email" required>
       </div>
       <div class="formulario">
-        <label id="number-label" for="cpf">CPF</label><span id="validacpf"></span>    
-        <input name="cpf" id="cpf" type="text" placeholder="Seu CPF" maxlength="11" pattern="[0-9]{11}" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
+        <label id="number-label" for="cpf">CPF</label><span id="validacpf"></span>
+        <input name="cpf" class="inputform" id="cpf" type="text" placeholder="Seu CPF" maxlength="11" pattern="[0-9]{11}" oninput="this.value=this.value.replace(/[^0-9]/g,'');">
       </div>
       <?php
 
       ?>
       <div class="formulario" id="categorias">
         <p>Na Black Friday, você está procurando por ofertas em quais categorias? (selecione até 3 opções)</p>
-        <input type="checkbox" id="modacategoria" name="categoria" value="1" onclick="exibe(modacategoria,modaresposta)"> Moda
+        <input type="checkbox" id="modacategoria" name="categoria" onclick="exibe(modacategoria,modaresposta)" value="1"> Moda
         <br>
         <input type="checkbox" id="artdiversoscategoria" name="categoria" onclick="exibe(artdiversoscategoria,artdiversosresposta)" value="2"> Artigos Diversos
         <br>
@@ -196,86 +195,10 @@ require 'config/connection.php';
     </form>
   </div>
 
-  <script>
-    //Exibe dinâmicamente containers de resposta de acordo com a categoria selecionada
-    $(".formularioresposta").hide();
+  <script type="text/javascript" src="scripts/show_containers.js"></script>
+  <script type="text/javascript" src="scripts/input_limit.js"></script>
+  <script type="text/javascript" src="scripts/valida_cpf.js"></script>
 
-    function exibe(categoria, resposta) {
-      if ($(categoria).is(":checked")) {
-        $(resposta).show(200);
-      } else {
-        $(resposta).hide(200);
-      }
-    }
-
-    //Limita a seleção de 3 opções para os inputs dentro da div de categoria
-    $(".formulario input[type=checkbox]").on("click", function() {
-      var count = $(".formulario input[type=checkbox]:checked").length;
-      if (count < 3) {
-        $(".formulario input[type=checkbox]").removeAttr("disabled");
-      } else {
-        $(".formulario input[type=checkbox]").prop("disabled", "disabled");
-        $(".formulario input[type=checkbox]:checked").removeAttr("disabled");
-      }
-    });
-  </script>
-
-  <script>
-    //validação CPF em JS
-    function CPF() {
-      "user_strict";
-
-      function r(r) {
-        for (var t = null, n = 0; 9 > n; ++n) t += r.toString().charAt(n) * (10 - n);
-        var i = t % 11;
-        return i = 2 > i ? 0 : 11 - i
-      }
-
-      function t(r) {
-        for (var t = null, n = 0; 10 > n; ++n) t += r.toString().charAt(n) * (11 - n);
-        var i = t % 11;
-        return i = 2 > i ? 0 : 11 - i
-      }
-      var n = '<p style="color:red; font-size:12px;">Informe um CPF válido</p>',
-        i = '<p style="color:green; font-size:12px;">CPF válido</p>';
-      this.gera = function() {
-        for (var n = "", i = 0; 9 > i; ++i) n += Math.floor(9 * Math.random()) + "";
-        var o = r(n),
-          a = n + "-" + o + t(n + "" + o);
-        return a
-      }, this.valida = function(o) {
-        for (var a = o.replace(/\D/g, ""), u = a.substring(0, 9), f = a.substring(9, 11), v = 0; 10 > v; v++)
-          if ("" + u + f == "" + v + v + v + v + v + v + v + v + v + v + v) return n;
-        var c = r(u),
-          e = t(u + "" + c);
-        return f.toString() === c.toString() + e.toString() ? i : n
-      }
-    }
-
-    var CPF = new CPF();
-
-    $(document).ready(function() {
-      $("#cpf").keyup(function() {
-        var teste = CPF.valida($(this).val());
-        $("#validacpf").html(teste);
-        if (teste == '<p style="color:green; font-size:12px;">CPF válido</p>') {
-          $("#submit").removeAttr("disabled");
-        } else {
-          $("#submit").attr("disabled", true);
-        }
-      });
-
-      $("#cpf").blur(function() {
-        var teste = CPF.valida($(this).val());
-        $("#validacpf").html(teste);
-        if (teste == '<p style="color:green; font-size:12px;">CPF válido</p>') {
-          $("#submit").removeAttr("disabled");
-        } else {
-          $("#submit").attr("disabled", true);
-        }
-      });
-    });
-  </script>
 </body>
 
 </html>

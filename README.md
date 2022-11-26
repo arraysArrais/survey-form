@@ -16,7 +16,9 @@ I recommend using XAMPP for the ease of use, but you could also install needed c
 - Responsive
 - Strong server-side validation for input fields
 - MySQL database integration
-
+- API to return data
+- Admin Panel
+- CSV data export
 
 ## Installation
 
@@ -36,6 +38,26 @@ You can change the background image to one of the image assets included by chang
 ```bash
   background: url(assets/images/image1.jpg)
   background: url(assets/images/image2.jpg)
+```
+
+## API Usage
+
+#### List all itens
+
+```http
+  GET /api/getall.php
+```
+
+#### Category score
+
+```http
+  GET /api/categoria.php
+```
+
+#### Answer score
+
+```http
+  GET /api/respostas.php
 ```
 
 
@@ -63,7 +85,11 @@ You can change the background image to one of the image assets included by chang
 - [x]  Back-end platform integration -> DONE with **PHP + MySQL**
 - [x]  Strong client-side dynamic JS validation
 - [x]  Server-side validations
-- [ ]  CSV data export
+- [x]  Login screen
+- [x]  Admin Panel
+- [x]  CSV data export
+- [x]  API to return data
+- [ ]  New features to be added on admin panel
 - [ ]  Analytics charts
 
 
