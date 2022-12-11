@@ -7,7 +7,7 @@ $pass = filter_input(INPUT_POST, 'pass');
 
 $hashedpass = password_hash($pass, PASSWORD_DEFAULT);
 
-$dbPassQuery = $db->prepare("select pass from admin where username=:user");
+$dbPassQuery = $db->prepare("select * from admin where username=:user");
 $dbPassQuery->bindValue(':user', $user);
 $dbPassQuery->execute();
 
@@ -28,6 +28,7 @@ if (password_verify($pass, $dbPassRetrieved['pass']) == true) {
 
     //jogando token p/ sessão
     $_SESSION['token'] = $token;
+    $_SESSION['user'] = $dbPassRetrieved['username'];
     header("Location: admin.php");
 } else {
     $_SESSION['erro'] = "<p class=" . "error" . ">Usuário ou senha inválidos<p><br>";

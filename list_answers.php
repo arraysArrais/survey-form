@@ -4,14 +4,35 @@ require 'config/connection.php';
 
 $_SESSION['active'] = 'listar_respostas';
 
-$sql = $db->prepare("SELECT u.id, u.nome, u.email, u.cpf, u.data_criacao, c.categoria, r.resposta  FROM usuarios u
+//verifica se o token gravado no banco bate com o token da sessão   
+if (empty($_SESSION['token'])) {
+    $_SESSION['erro'] = "<p class=" . "error" . ">Você não está logado<p><br>";
+    header("Location: login.php");
+    exit;
+} else {
+    $sql = $db->prepare("SELECT * FROM admin where session_token = :token");
+    $sql->bindValue(':token', $_SESSION['token']);
+    $sql->execute();
+
+    $data = $sql->fetch(PDO::FETCH_ASSOC);
+
+    if ($_SESSION['token'] === $data['session_token']) {
+        $sql = $db->prepare("SELECT u.id, u.nome, u.email, u.cpf, u.data_criacao, c.categoria, r.resposta  FROM usuarios u
   INNER JOIN usuarios_respostas ur ON u.id=ur.idUsuarios
   INNER JOIN respostas r ON ur.idRespostas=r.id
   INNER JOIN categoria c ON r.idCategoria=c.id
   ORDER BY u.id asc");
 
-$sql->execute();
-$data = $sql->fetchAll(PDO::FETCH_ASSOC);
+        $sql->execute();
+        $data = $sql->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $_SESSION['erro'] = "<p class=" . "error" . ">Sessão expirada<p><br>";
+        header("Location: login.php");
+        exit;
+    }
+}
+
+
 
 ?>
 
@@ -98,7 +119,7 @@ $data = $sql->fetchAll(PDO::FETCH_ASSOC);
                     <td><?= $respostas['nome'] ?></td>
                     <td><?= $respostas['email'] ?></td>
                     <td><?= $respostas['cpf'] ?></td>
-                    <td><?= date("d/m/y",strtotime($respostas['data_criacao'])) ?></td>
+                    <td><?= date("d/m/y", strtotime($respostas['data_criacao'])) ?></td>
                     <td><?= $respostas['categoria'] ?></td>
                     <td><?= $respostas['resposta'] ?></td>
                 </tr>
