@@ -2,30 +2,18 @@
 session_start();
 require 'config/connection.php';
 
-$_SESSION['active'] = 'admin';
+$_SESSION['active'] = 'listar_respostas';
 
-//verifica se o token gravado no banco bate com o token da sessão   
-if (!empty($_SESSION['token'])) {
+$sql = $db->prepare("SELECT u.id, u.nome, u.email, u.cpf, u.data_criacao, c.categoria, r.resposta  FROM usuarios u
+  INNER JOIN usuarios_respostas ur ON u.id=ur.idUsuarios
+  INNER JOIN respostas r ON ur.idRespostas=r.id
+  INNER JOIN categoria c ON r.idCategoria=c.id
+  ORDER BY u.id asc");
 
-    $sql = $db->prepare("SELECT * FROM admin where session_token = :token");
-    $sql->bindValue(':token', $_SESSION['token']);
-    $sql->execute();
-
-    $data = $sql->fetch(PDO::FETCH_ASSOC);
-
-    if ($data) {
-        $_SESSION['user'] = $data['username'];
-    } else {
-        $_SESSION['erro'] = "<p class=" . "error" . ">Sessão expirada<p><br>";
-        header("Location: login.php");
-        exit;
-    }
-}
-
+$sql->execute();
+$data = $sql->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
-
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -53,7 +41,7 @@ if (!empty($_SESSION['token'])) {
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link <?= $_SESSION['active'] === 'admin' ? 'active' : '' ?>" aria-current="page" href="admin.php">Admin</a>
+                        <a class="nav-link" aria-current="page" href="admin.php">Admin</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="index.php">Home</a>
@@ -65,7 +53,7 @@ if (!empty($_SESSION['token'])) {
                         <a class="nav-link" href="export.php">Exportar dados</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="list_answers.php">Listar Respostas</a>
+                        <a class="nav-link <?= $_SESSION['active'] === 'listar_respostas' ? 'active' : '' ?>" href="listar_respostas.php">Listar Respostas</a>
                     </li>
 
                     <!--<li class="nav-item dropdown">
@@ -93,6 +81,28 @@ if (!empty($_SESSION['token'])) {
             </div>
         </div>
     </nav>
+    <div class="table" style="overflow-x:auto;">
+        <table border="2">
+            <tr>
+                <th>Id</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>CPF</th>
+                <th>Data</th>
+                <th>Categoria</th>
+                <th>Resposta</th>
+            </tr>
+            <?php foreach ($data as $respostas) : ?>
+                <tr>
+                    <td><?= $respostas['id'] ?></td>
+                    <td><?= $respostas['nome'] ?></td>
+                    <td><?= $respostas['email'] ?></td>
+                    <td><?= $respostas['cpf'] ?></td>
+                    <td><?= date("d/m/y",strtotime($respostas['data_criacao'])) ?></td>
+                    <td><?= $respostas['categoria'] ?></td>
+                    <td><?= $respostas['resposta'] ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </table>
+    </div>
 </body>
-
-</html>

@@ -15,15 +15,22 @@ $dbPassQuery->execute();
 $dbPassRetrieved = $dbPassQuery->fetch(PDO::FETCH_ASSOC);
 
 //verificando se o hash armazenado no banco bate com a senha informada no input do form
-if(password_verify($pass, $dbPassRetrieved['pass'])==true){
-    $_SESSION['username'] = $user;
+if (password_verify($pass, $dbPassRetrieved['pass']) == true) {
+
+    //gerando token 
+    $token = md5(time() . rand(0, 9999) . time());
+
+    //gravando token no banco
+    $sql = $db->prepare("UPDATE admin SET session_token = :token WHERE username = :user");
+    $sql->bindValue(':token', $token);
+    $sql->bindValue(':user', $user);
+    $sql->execute();
+
+    //jogando token p/ sessão
+    $_SESSION['token'] = $token;
     header("Location: admin.php");
-}
-else{
+} else {
     $_SESSION['erro'] = "<p class=" . "error" . ">Usuário ou senha inválidos<p><br>";
     header("Location: login.php");
     exit;
 }
-
-
-

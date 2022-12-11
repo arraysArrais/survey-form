@@ -12,8 +12,6 @@ SET time_zone = "+00:00";
 -- Banco de dados: `survey`
 --
 
--- --------------------------------------------------------
-
 --
 -- Estrutura da tabela `admin`
 --
@@ -21,15 +19,16 @@ SET time_zone = "+00:00";
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL,
   `username` varchar(100) NOT NULL,
-  `pass` varchar(100) NOT NULL
+  `pass` varchar(100) NOT NULL,
+  `session_token` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Extraindo dados da tabela `admin`
 --
 
-INSERT INTO `admin` (`id`, `username`, `pass`) VALUES
-(1, 'admin', '$2y$10$M/UXrP2y0wKFWjfSJhY.1.HgQfZnnSvzUj9te3AMqANITybN5RbVq');
+INSERT INTO `admin` (`id`, `username`, `pass`, `session_token`) VALUES
+(1, 'admin', '$2y$10$M/UXrP2y0wKFWjfSJhY.1.HgQfZnnSvzUj9te3AMqANITybN5RbVq', '4106f0677abc208b7f13dea4b187479f');
 
 -- --------------------------------------------------------
 
