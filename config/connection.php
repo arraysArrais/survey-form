@@ -27,4 +27,6 @@ try {
     } else {
         file_put_contents(__DIR__ . '/log/errorLog.txt', $errorMsg);
     }
+    // header("Location: index.php");
+    // exit;
 }

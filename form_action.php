@@ -8,6 +8,7 @@ $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 $cpf = filter_input(INPUT_POST, 'cpf', FILTER_SANITIZE_SPECIAL_CHARS);
 
 
+try{
 //se não passar pelo filtro de e-mail
 if($email === false){
     $_SESSION['erro'] = "<p class=" . "error" . ">ERRO! Email inválido!<p>";
@@ -68,3 +69,11 @@ else{
     header("Location: index.php");
     exit;
 }
+
+}
+catch(Throwable $e){
+    $_SESSION['erro'] = "<p class=" . "error" . ">Erro ao enviar respostas para o banco de dados<p><br>";
+    header("Location: index.php");
+    exit;
+}
+

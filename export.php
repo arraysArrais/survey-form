@@ -43,7 +43,7 @@ else {
   } 
   
   catch (Throwable $e) {
-    $_SESSION['erro'] = "<p class=" . "error" . ">Erro ao conectar-se ao banco de dados<p><br>";
+    $_SESSION['erro'] = "<p class=" . "error" . ">Erro ao buscar informações no banco de dados<p><br>";
     header("Location: login.php");
     exit;
   }
