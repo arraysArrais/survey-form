@@ -26,11 +26,11 @@ session_start();
                 checkSessionError();
                 ?>
                 <label for="username">Usuário: </label>
-                <input class="inputform" type="text" name="username" required>
+                <input class="inputform" type="text" name="username" placeholder="Insira seu usuário" required>
             </div>
             <div class="formulario">
                 <label for="pass">Senha: </label>
-                <input class="inputform" type="password" name="pass" required>
+                <input class="inputform" type="password" name="pass" placeholder="Insira sua senha" required>
                 <br><br>
             </div><br><br>
             <div class="formulario">

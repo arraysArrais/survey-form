@@ -6,7 +6,7 @@ $_SESSION['active'] = 'admin';
 
 //verifica se o token gravado no banco bate com o token da sessão   
 if (empty($_SESSION['token'])) {
-    $_SESSION['erro'] = "<p class=" . "error" . ">Você não está logado<p><br>";
+    $_SESSION['erro'] = "<p class=" . "error" . ">Você não está logado</p><br>";
     header("Location: login.php");
     exit;
 } else {

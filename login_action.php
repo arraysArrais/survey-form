@@ -7,31 +7,46 @@ $pass = filter_input(INPUT_POST, 'pass');
 
 $hashedpass = password_hash($pass, PASSWORD_DEFAULT);
 
-$dbPassQuery = $db->prepare("select * from admin where username=:user");
-$dbPassQuery->bindValue(':user', $user);
-$dbPassQuery->execute();
+try {
 
-//busca a senha do usuário inserido e armazena em $dbPassRetrieved
-$dbPassRetrieved = $dbPassQuery->fetch(PDO::FETCH_ASSOC);
+    if (!isset($db)) {
+        $db = '';
+    }
 
-//verificando se o hash armazenado no banco bate com a senha informada no input do form
-if (password_verify($pass, $dbPassRetrieved['pass']) == true) {
+    $dbPassQuery = $db->prepare("select * from admin where username=:user");
+    $dbPassQuery->bindValue(':user', $user);
+    $dbPassQuery->execute();
 
-    //gerando token 
-    $token = md5(time() . rand(0, 9999) . time());
+    //busca a senha do usuário inserido e armazena em $dbPassRetrieved
+    $dbPassRetrieved = $dbPassQuery->fetch(PDO::FETCH_ASSOC);
 
-    //gravando token no banco
-    $sql = $db->prepare("UPDATE admin SET session_token = :token WHERE username = :user");
-    $sql->bindValue(':token', $token);
-    $sql->bindValue(':user', $user);
-    $sql->execute();
+    //verificando se o hash armazenado no banco bate com a senha informada no input do form
+    if (password_verify($pass, $dbPassRetrieved['pass']) == true) {
 
-    //jogando token p/ sessão
-    $_SESSION['token'] = $token;
-    $_SESSION['user'] = $dbPassRetrieved['username'];
-    header("Location: admin.php");
-} else {
-    $_SESSION['erro'] = "<p class=" . "error" . ">Usuário ou senha inválidos<p><br>";
+        //gerando token 
+        $token = md5(time() . rand(0, 9999) . time());
+
+        //gravando token no banco
+        $sql = $db->prepare("UPDATE admin SET session_token = :token WHERE username = :user");
+        $sql->bindValue(':token', $token);
+        $sql->bindValue(':user', $user);
+        $sql->execute();
+
+        //jogando token p/ sessão
+        $_SESSION['token'] = $token;
+        $_SESSION['user'] = $dbPassRetrieved['username'];
+        header("Location: admin.php");
+    } 
+    else {
+        $_SESSION['erro'] = "<p class=" . "error" . ">Usuário ou senha inválidos<p><br>";
+        header("Location: login.php");
+        exit;
+    }
+} 
+catch (Throwable $e) {
+    $_SESSION['erro'] = "<p class=" . "error" . ">Erro ao conectar-se ao banco de dados<p><br>";
     header("Location: login.php");
     exit;
 }
+
+
