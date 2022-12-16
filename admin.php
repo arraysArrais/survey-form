@@ -4,20 +4,28 @@ require 'config/connection.php';
 
 $_SESSION['active'] = 'admin';
 
-//verifica se o token gravado no banco bate com o token da sessão   
+//verifica se o token gravado no banco bate com o token da sessão
 if (empty($_SESSION['token'])) {
     $_SESSION['erro'] = "<p class=" . "error" . ">Você não está logado</p><br>";
     header("Location: login.php");
     exit;
-} else {
-    $sql = $db->prepare("SELECT * FROM admin where session_token = :token");
-    $sql->bindValue(':token', $_SESSION['token']);
-    $sql->execute();
+} 
+else {
+    try {
+        $sql = $db->prepare("SELECT * FROM admin where session_token = :token");
+        $sql->bindValue(':token', $_SESSION['token']);
+        $sql->execute();
 
-    $data = $sql->fetch(PDO::FETCH_ASSOC);
+        $data = $sql->fetch(PDO::FETCH_ASSOC);
 
-    if ($sql->rowCount() < 1) {
-        $_SESSION['erro'] = "<p class=" . "error" . ">Sessão expirada<p><br>";
+        if ($sql->rowCount() < 1) {
+            $_SESSION['erro'] = "<p class=" . "error" . ">Sessão expirada<p><br>";
+            header("Location: login.php");
+            exit;
+        }
+    } 
+    catch (Throwable $e) {
+        $_SESSION['erro'] = "<p class=" . "error" . ">Erro ao conectar-se ao banco de dados<p><br>";
         header("Location: login.php");
         exit;
     }
