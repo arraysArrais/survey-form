@@ -8,7 +8,8 @@ $db_pass = '';
 
 try {
     $db = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
-    $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    // $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
 } catch (Throwable $e) {
     // $_SESSION['erro'] = "<p class=" . "error" . ">" . $e->getMessage() . "<p><br>";
     $_SESSION['erro'] = "<p class=" . "error" . ">Erro ao conectar-se ao banco de dados<p><br>";
