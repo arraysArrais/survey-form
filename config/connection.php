@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 
 $db_host = 'localhost';
@@ -10,9 +11,9 @@ try {
     $db = new PDO("mysql:dbname=$db_name;host=$db_host", $db_user, $db_pass);
     // $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-} catch (Throwable $e) {
+} catch (PDOException $e) {
     // $_SESSION['erro'] = "<p class=" . "error" . ">" . $e->getMessage() . "<p><br>";
-    $_SESSION['erro'] = "<p class=" . "error" . ">Erro ao conectar-se ao banco de dados<p><br>";
+    
     //echo "<p class="."error".">Erro ao conectar-se ao banco de dados</p>";
 
 
@@ -27,6 +28,7 @@ try {
     } else {
         file_put_contents(__DIR__ . '/log/errorLog.txt', $errorMsg);
     }
-    // header("Location: index.php");
-    // exit;
+    $_SESSION['erro'] = "<p class=" . "error" . ">Erro ao conectar-se ao banco de dados<p><br>";
+    header("Location: index.php");
+    exit;
 }
