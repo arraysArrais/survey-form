@@ -40,44 +40,6 @@ You can change the background image to one of the image assets included by chang
   background: url(assets/images/image2.jpg)
 ```
 
-## API Usage
-
-#### List all itens
-
-```http
-  GET /api/getall.php
-```
-
-#### Category score
-
-```http
-  GET /api/categoria.php
-```
-
-#### Answer score
-
-```http
-  GET /api/respostas.php
-```
-
-
-## Screenshots
-
-
-![](https://i.imgur.com/AqXj9mR.jpeg)
-
-
-![](https://i.imgur.com/Kg6o313.jpeg)
-
-
-![](https://i.imgur.com/ha7UU0O.jpeg)
-
-![App Screenshot](https://i.imgur.com/Do5Ez3R.jpeg)
-
-![App Screenshot](https://i.imgur.com/QQfPMpN.jpeg) 
-
-![](https://i.imgur.com/fDeUaVF.gif)
-
 
 
 ## Roadmap
@@ -88,7 +50,7 @@ You can change the background image to one of the image assets included by chang
 - [x]  Login screen
 - [x]  Admin Panel
 - [x]  CSV data export
-- [x]  API to return data
+- [x]  ~~API to return data~~ _Deprecated_ a proper API will be made using Laravel
 - [ ]  New features to be added on admin panel
 - [ ]  Analytics charts
 
