@@ -167,10 +167,12 @@ a:hover {
 }
 
 table {
+  margin: 0 auto 0 auto;
   border-radius: 15px;
   padding:10px;
   border-collapse: separate;
   border-spacing: 10px 15px;
+  width:100%
 }
 td{
   border-left-width: 0;

@@ -108,7 +108,7 @@ if (empty($_SESSION['token'])) {
             </div>
         </div>
     </nav>
-    <div class="table" style="overflow-x:auto;">
+    <div class="table">
         <table border="2">
             <tr>
                 <th>Id</th>
